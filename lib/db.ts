@@ -1,7 +1,8 @@
 import ServerlessClient from 'serverless-postgres';
 
 export const client = new ServerlessClient({
-  connectionString: process.env.DB_CONNECTION_STRING
+  connectionString: process.env.DB_CONNECTION_STRING,
+  ssl: { rejectUnauthorized: false }
 });
 
 export async function query(
