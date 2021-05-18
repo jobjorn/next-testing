@@ -3,7 +3,12 @@ import { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 
 interface Props {
-  test: string;
+  test: Fruit[];
+}
+
+interface Fruit {
+  id: number;
+  fruit: string;
 }
 
 const IndexPage: NextPage<Props> = ({ test }) => {
@@ -12,16 +17,18 @@ const IndexPage: NextPage<Props> = ({ test }) => {
       <Head>
         <title>NextJS Typescript Starter</title>
       </Head>
+
       <p>Just a starter for creating NextJS Typescript apps.</p>
-      <p>{test}</p>
+      <pre>{JSON.stringify(test, null, 2)}</pre>
     </div>
   );
 };
 
 export const getServerSideProps: GetServerSideProps<Props> = async () => {
-  const result = await query('SELECT NOW() as now');
+  const result = await query('SELECT * FROM fruits');
+  const { rows }: { rows: Fruit[] } = result;
   console.log(result);
-  return { props: { test: 'hej3' } };
+  return { props: { test: rows } };
 };
 
 export default IndexPage;
